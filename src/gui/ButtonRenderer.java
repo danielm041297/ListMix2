@@ -48,9 +48,9 @@ public class ButtonRenderer extends JButton implements TableCellRenderer {
 	  	try{
 	  		Image img;
 	  		if(!flag)
-	  			img = ImageIO.read(getClass().getResource("resources/add.jpg"));
+	  			img = ImageIO.read(getClass().getResource("/add.jpg"));
 	  		else
-	  			img = ImageIO.read(getClass().getResource("resources/remove.jpg"));
+	  			img = ImageIO.read(getClass().getResource("/remove.jpg"));
 			setIcon(new ImageIcon(img));
 			setBorder(null);
 		}catch(IOException e){System.out.println("Problem reading images! Check filepath.");} 

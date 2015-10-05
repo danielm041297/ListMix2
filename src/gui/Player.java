@@ -189,6 +189,11 @@ public class Player extends JComponent implements ActionListener{
 		if(!queue.isEmpty())
 			queue.get(0).play();
 	}
+	public boolean isEmpty(){
+		if(queue.isEmpty())
+			return true;
+		return false;
+	}
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource()==next){
 			try {
@@ -234,7 +239,13 @@ public class Player extends JComponent implements ActionListener{
 
 		    button.addActionListener(new ActionListener() {
 		      public void actionPerformed(ActionEvent e) {
-		    	 		    	  
+		    	 	for(int i =0;i<queue.size();i++){
+		    	 		if(name.equals(queue.get(i).getName())){
+		    	 			queue.remove(i);
+		    	 			updateTable();
+		    	 			break;
+		    	 		}
+		    	 	}
 		      }
 		    });
 		  }

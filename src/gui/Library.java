@@ -41,6 +41,8 @@ public class Library extends JComponent implements ActionListener{
      * Constructs and sets up the music library
      */
 	public Library(){
+		//load songs from database
+		songs = new ArrayList<Song>();
 		flag=false;
         fc = new JFileChooser();
         fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -131,8 +133,10 @@ public class Library extends JComponent implements ActionListener{
 	    }
 	    else {
 	        String path = f.getPath();
-	        Song s = new Song(path,"John","Cena");
+	        System.out.println(path);
+	        Song s = new Song(path,"John","Cena", player);
 	        songs.add(s);
+	        //add to database
 	    }
 	}
 	public void actionPerformed(ActionEvent e){
@@ -192,9 +196,7 @@ public class Library extends JComponent implements ActionListener{
 		    	  for(int i=0;i<songs.size();i++){
 		    		  if(songs.get(i).getName().equals(name))
 		    			  player.add(songs.get(i)); 
-		    	  }
-		    	  
-		    	  
+		    	  }  
 		      }
 		    });
 		  }

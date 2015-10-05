@@ -8,7 +8,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import javax.swing.*;
+
+import javafx.embed.swing.JFXPanel;
+
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 /**
  * ListMix
  * The main frame for this gui application
@@ -21,7 +25,19 @@ public class ListMix extends JFrame {
      *Sets up the gui application 
      */
 	public ListMix(){
-		
+		final CountDownLatch latch = new CountDownLatch(1);
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+		        new JFXPanel(); // initializes JavaFX environment
+		        latch.countDown();
+		    }
+		});
+		try {
+			latch.await();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         new JFrame("ListMix");
         setTitle("ListMix");
     	setLayout(new BorderLayout());
