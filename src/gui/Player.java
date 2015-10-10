@@ -28,10 +28,12 @@ public class Player extends JComponent implements ActionListener{
 	private JButton next,prev,pause,play,shuffle;
 	private Library library;
 	private static ArrayList<Song> queue;
+	private int currentpos;
 		/**
 		 * Contructs a blank player
 		 */
 	public Player(){
+		currentpos=-1;
 		queue = new ArrayList<Song>();
 		p= new JPanel(new GridLayout(1,5));
 		next = new JButton();
@@ -155,21 +157,23 @@ public class Player extends JComponent implements ActionListener{
 		updateTable();
 	}
 	public void shuffle(){
+		Song keepfirst = queue.get(0);
+		queue.remove(0);
 		Collections.shuffle(queue);
+		queue.add(0, keepfirst);
 		updateTable();
 	}
-	public void previous() throws IOException{
+	public void previous(){ // broken
 		queue.get(0).stop();
 		if(previous!=null){
 			queue.add(0,previous);
 			play();
 			updateTable();
 		}
-		
 	}
-	public void next() throws IOException{
-		queue.get(0).stop();
+	public void next(){
 		if(queue.size()>1){
+			queue.get(0).stop();
 			queue.remove(0);
 			play();
 			updateTable();
@@ -179,8 +183,8 @@ public class Player extends JComponent implements ActionListener{
 	 * Pauses the current song
 	 */
 	public void pause(){
-		if(queue.size()>0)
-			queue.get(0).stop();
+		if(!queue.isEmpty())
+			queue.get(0).pause();
 	}
 	/**
 	 * Plays the song at the beginning of the player
@@ -196,20 +200,10 @@ public class Player extends JComponent implements ActionListener{
 	}
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource()==next){
-			try {
-				next();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			next();
 		}
 		if(e.getSource()==prev){
-			try {
-				previous();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}	
+			previous();	
 		}
 		if(e.getSource()==pause){
 			pause();
@@ -241,7 +235,16 @@ public class Player extends JComponent implements ActionListener{
 		      public void actionPerformed(ActionEvent e) {
 		    	 	for(int i =0;i<queue.size();i++){
 		    	 		if(name.equals(queue.get(i).getName())){
-		    	 			queue.remove(i);
+		    	 			Song s = queue.get(i);
+		    	 			boolean playing = s.isPlaying();
+		    	 			if(playing){ //maybe unnecessary since right now we are always playing the first song in the queue.... eventually this code will be necessary tho
+		    	 				s.stop();
+		    	 				queue.remove(i);
+		    	 				queue.get(0).play();
+		    	 			}
+		    	 			else{
+		    	 				queue.remove(i);
+		    	 			}
 		    	 			updateTable();
 		    	 			break;
 		    	 		}

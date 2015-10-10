@@ -62,6 +62,7 @@ public class Library extends JComponent implements ActionListener{
 		
 		sort = new JComboBox<String>();
 		sort.setSize(new Dimension(50, p.getHeight()));
+		sort.addItem("Unsorted");
 		sort.addItem("A-Z");
 		sort.addItem("Popularity");
 		sort.addItem("Artist");
@@ -128,15 +129,37 @@ public class Library extends JComponent implements ActionListener{
 	    File[] files;
 	    if (f.isDirectory() && (files = f.listFiles()) != null) {
 	        for (File fi : files) {
-	            addAllMp3s(fi);
+	        	if(fi.getPath().endsWith(".mp3"))
+	        		addAllMp3s(fi);
 	        }
 	    }
 	    else {
 	        String path = f.getPath();
-	        System.out.println(path);
-	        Song s = new Song(path,"John","Cena", player);
-	        songs.add(s);
-	        //add to database
+	        if(path.indexOf("/")==-1){ // Windows path
+		        String filename2 = path.substring(path.lastIndexOf("\\")+1, path.lastIndexOf(""));
+		        String[] song_data=filename2.split(" - ");
+		        String artist= song_data[0];
+		        String song= song_data[1];
+		        Song s = new Song(path,song,artist,player);
+		        songs.add(s);
+		        //add to database
+	        }
+	        else{ //Linux path
+		        String filename1 = path.substring(path.lastIndexOf("/")+1, path.lastIndexOf("."));
+		        String[] song_data = filename1.split(" - ");
+		        if(song_data.length==2){
+			        String artist= song_data[0];
+			        String song= song_data[1];
+			        Song s = new Song(path,song,artist,player);
+			        songs.add(s);
+		        }
+		        else{
+		        	JOptionPane.showMessageDialog(this, "Some songs failed to import! Artist - Song_Name.mp3 is the format.", "Warning",
+		        	        JOptionPane.WARNING_MESSAGE);
+		        }
+		        //add to database
+	        }
+	        
 	    }
 	}
 	public void actionPerformed(ActionEvent e){
@@ -155,6 +178,10 @@ public class Library extends JComponent implements ActionListener{
 	           	JComboBox<String> cb=(JComboBox<String>)e.getSource();
 	    		String which = (String)cb.getSelectedItem(); 
 				switch(which){
+					case "Unsorted":
+						Collections.shuffle(songs);
+						updateLibrary();
+						break;
 					case "A-Z":	
 						Collections.sort(songs,Song.NameComparator);
 						updateLibrary();

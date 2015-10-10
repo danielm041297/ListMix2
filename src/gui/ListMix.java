@@ -35,7 +35,6 @@ public class ListMix extends JFrame {
 		try {
 			latch.await();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         new JFrame("ListMix");

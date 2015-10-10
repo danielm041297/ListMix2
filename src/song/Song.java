@@ -40,14 +40,22 @@ public class Song{
 	private int timesPlayed;
 	private String artist;
     private MediaPlayer mediaplayer;
+   
     public Song(String filePath, String name, String artist,Player player){
     	this.name =name;
-    	this.name = artist;
+    	this.artist = artist;
     	timesPlayed=0;
         uri =new File(filePath).toURI().toString();
 		Media media = new Media(uri);
         mediaplayer = new MediaPlayer(media);
-        if(!uri.isEmpty() && uri.endsWith(".mp3")){
+        mediaplayer.setOnEndOfMedia(new Runnable() {
+			@Override
+			public void run() {
+				player.next();
+				
+			}
+		});
+        if(uri!=null&&!uri.isEmpty() && uri.endsWith(".mp3")){
             //add to database
         }
         else{
@@ -100,6 +108,12 @@ public class Song{
 	}
 	public String getArtist() {
 		return artist;
+	}
+	public boolean isPlaying(){
+		if(mediaplayer.getStatus()==MediaPlayer.Status.PLAYING){
+			return true;
+		}
+		return false;
 	}
 	public boolean equals(Object o){
 		Song s = (Song)o;
