@@ -23,7 +23,6 @@ import java.util.*;
 public class Player extends JComponent implements ActionListener{
 	private JPanel p;
 	private JTable table;
-	private Song previous;
 	private JButton next,prev,pause,play,shuffle;
 	private Library library;
 	private static ArrayList<Song> queue;
@@ -34,6 +33,7 @@ public class Player extends JComponent implements ActionListener{
 		 */
 	public Player(){
 		volume=1.0;
+		removedStack = new Stack<Song>();
 		queue = new ArrayList<Song>();
 		p= new JPanel(new GridLayout(1,5));
 		next = new JButton();
@@ -149,6 +149,9 @@ public class Player extends JComponent implements ActionListener{
 			if(name.equals(queue.get(i).getName())){
 				ret= queue.get(i);
 				queue.remove(i);
+				if(i==0){
+					removedStack.push(ret);
+				}
 			}
 		}
 		updateTable();
@@ -159,15 +162,20 @@ public class Player extends JComponent implements ActionListener{
 		updateTable();
 	}
 	public void shuffle(){
-		Song keepfirst = queue.get(0);
-		queue.remove(0);
-		Collections.shuffle(queue);
-		queue.add(0, keepfirst);
-		updateTable();
+		if(queue.size()>1){
+			Song keepfirst = queue.get(0);
+			queue.remove(0);
+			Collections.shuffle(queue);
+			queue.add(0, keepfirst);
+			updateTable();
+		}
 	}
 	public void previous(){ // broken
-		queue.get(0).stop();
-		if(previous!=null){
+		
+		if(!removedStack.isEmpty()){
+			if(!queue.isEmpty()){
+				queue.get(0).stop();
+			}
 			queue.add(0,removedStack.pop());
 			play();
 			updateTable();
@@ -202,7 +210,7 @@ public class Player extends JComponent implements ActionListener{
 		return false;
 	}
 	public void changeSoundLevel(int percent) {
-		volume = (double)percent/10;
+		volume = ((double)percent)/100;
 		if(queue.get(0).isPlaying()){
 			queue.get(0).setVolume(volume);
 		}
@@ -243,18 +251,19 @@ public class Player extends JComponent implements ActionListener{
 
 		    button.addActionListener(new ActionListener() {
 		      public void actionPerformed(ActionEvent e) {
-		    	 	for(int i =0;i<queue.size();i++){
+		    	   	for(int i =0;i<queue.size();i++){
 		    	 		if(name.equals(queue.get(i).getName())){
-		    	 			Song s = queue.get(i);
-		    	 			boolean playing = s.isPlaying();
-		    	 			if(playing){ //maybe unnecessary since right now we are always playing the first song in the queue.... eventually this code will be necessary tho
-		    	 				s.stop();
+		    	 			if(i!=0){
 		    	 				queue.remove(i);
-		    	 				queue.get(0).play(volume);
 		    	 			}
 		    	 			else{
-		    	 				queue.remove(i);
-		    	 			}
+			    	 			Song s = queue.get(0);
+			    	 			s.stop();
+			    	 			removedStack.push(s);
+			    	 			queue.remove(0);
+			    	 			play();
+			    	 			
+			    	 		}
 		    	 			updateTable();
 		    	 			break;
 		    	 		}

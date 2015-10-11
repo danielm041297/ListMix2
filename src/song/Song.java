@@ -125,6 +125,7 @@ public class Song{
 		Song s = (Song)o;
 		return this.name.equals(s.getName()) &&	this.artist.equals(s.getArtist());
 	}
-	
- 
+	public String toString(){
+		return artist +"-"+name;
+	} 
 }
