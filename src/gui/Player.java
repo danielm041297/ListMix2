@@ -28,10 +28,12 @@ public class Player extends JComponent implements ActionListener{
 	private Library library;
 	private static ArrayList<Song> queue;
 	private Stack<Song> removedStack;
+	private double volume;
 		/**
 		 * Contructs a blank player
 		 */
 	public Player(){
+		volume=1.0;
 		queue = new ArrayList<Song>();
 		p= new JPanel(new GridLayout(1,5));
 		next = new JButton();
@@ -192,13 +194,20 @@ public class Player extends JComponent implements ActionListener{
 	 */
 	public void play(){
 		if(!queue.isEmpty())
-			queue.get(0).play();
+			queue.get(0).play(volume);
 	}
 	public boolean isEmpty(){
 		if(queue.isEmpty())
 			return true;
 		return false;
 	}
+	public void changeSoundLevel(int percent) {
+		volume = (double)percent/10;
+		if(queue.get(0).isPlaying()){
+			queue.get(0).setVolume(volume);
+		}
+	}
+
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource()==next){
 			next();
@@ -241,7 +250,7 @@ public class Player extends JComponent implements ActionListener{
 		    	 			if(playing){ //maybe unnecessary since right now we are always playing the first song in the queue.... eventually this code will be necessary tho
 		    	 				s.stop();
 		    	 				queue.remove(i);
-		    	 				queue.get(0).play();
+		    	 				queue.get(0).play(volume);
 		    	 			}
 		    	 			else{
 		    	 				queue.remove(i);
@@ -261,5 +270,5 @@ public class Player extends JComponent implements ActionListener{
 			  	return button;
 		  }
 		}
-
+	
 }

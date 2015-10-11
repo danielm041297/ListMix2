@@ -63,9 +63,10 @@ public class Song{
             uri = null;
         }
     }
-    public void play(){
+    public void play(double volume){
         if(uri != null){
         	timesPlayed++; // replace with database
+        	mediaplayer.setVolume(volume);
             mediaplayer.play();
         }
     }
@@ -84,6 +85,10 @@ public class Song{
         	mediaplayer.stop();
         }
     }
+    public void setVolume(double volume) {
+		mediaplayer.setVolume(volume);
+	}
+    //TO DO: ADD MUTE, and LOOP buttons
     public void mute(){
         if(uri != null){
            if(mediaplayer.isMute()){
@@ -120,5 +125,6 @@ public class Song{
 		Song s = (Song)o;
 		return this.name.equals(s.getName()) &&	this.artist.equals(s.getArtist());
 	}
+	
  
 }
