@@ -12,3 +12,10 @@ Ideas:
  1.) Add an option to download the song directly from the app. I will send a GET request to www.youtube-mp3.org using the url the user provides as the request parameter. Then I will download the song, and add it to the library.. 
 
 2.) Some music fingerprinting library, or creative method to recognize information of each song. This would get rid of the format mentioned above, and will make the app more extensible.
+
+To run:
+1.) Download zip file of the project.
+2.) Open Eclipse
+3.) Extract zip file
+4.) File > Import > Existing File into Workspace > ListMix2 (root directory) > Ok
+5.) Expand ListMix2, expand src, expand gui, open ListMix.java and hit run!

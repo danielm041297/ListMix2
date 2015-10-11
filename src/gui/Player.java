@@ -21,19 +21,17 @@ import java.util.*;
  * has controls, and methods to run
  */
 public class Player extends JComponent implements ActionListener{
-	private Song removed;
 	private JPanel p;
 	private JTable table;
 	private Song previous;
 	private JButton next,prev,pause,play,shuffle;
 	private Library library;
 	private static ArrayList<Song> queue;
-	private int currentpos;
+	private Stack<Song> removedStack;
 		/**
 		 * Contructs a blank player
 		 */
 	public Player(){
-		currentpos=-1;
 		queue = new ArrayList<Song>();
 		p= new JPanel(new GridLayout(1,5));
 		next = new JButton();
@@ -104,6 +102,7 @@ public class Player extends JComponent implements ActionListener{
 	 * Updates the player
 	 */
 	public void updateTable(){
+		//TO DO: HIGHLIGHT THE CURRENT SONG
 		String[] strs ={"Song Name",""};
 		DefaultTableModel model = new DefaultTableModel(strs,0);
 			
@@ -121,6 +120,7 @@ public class Player extends JComponent implements ActionListener{
 	    table.revalidate(); 	
 		table.setModel(model);
 	}
+	//TO DO: Make the playlist so that previous works.. like youtube playlists!!
 	/**
 	 * Gets a song from the player
 	 * @param name the name desired
@@ -166,7 +166,7 @@ public class Player extends JComponent implements ActionListener{
 	public void previous(){ // broken
 		queue.get(0).stop();
 		if(previous!=null){
-			queue.add(0,previous);
+			queue.add(0,removedStack.pop());
 			play();
 			updateTable();
 		}
@@ -174,7 +174,8 @@ public class Player extends JComponent implements ActionListener{
 	public void next(){
 		if(queue.size()>1){
 			queue.get(0).stop();
-			queue.remove(0);
+			Song s = queue.remove(0);
+			removedStack.push(s);
 			play();
 			updateTable();
 		}

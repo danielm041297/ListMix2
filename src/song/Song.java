@@ -20,19 +20,20 @@ public class Song{
 	public static Comparator<Song> NameComparator = new Comparator<Song>() {
         @Override
         public int compare(Song s1, Song s2) {
-            return s1.getName().compareTo(s2.getName());
+            return s1.getName().compareToIgnoreCase(s2.getName());
         }
     };
     public static Comparator<Song> PopularityComparator = new Comparator<Song>() {
         @Override
         public int compare(Song s1, Song s2) {
-            return s1.getPopularity()-s2.getPopularity();
+        	//TO DO: fix this compare method.
+            return s2.getPopularity()-s1.getPopularity();
         }
     };
     public static Comparator<Song> ArtistComparator = new Comparator<Song>() {
         @Override
         public int compare(Song s1, Song s2) {
-            return s1.getArtist().compareTo(s2.getArtist());
+            return s1.getArtist().compareToIgnoreCase(s2.getArtist());
         }
     };
 	private String uri;
