@@ -6,6 +6,7 @@ package gui;
  */
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import song.Song;
@@ -36,6 +37,7 @@ public class Player extends JComponent implements ActionListener{
 		removedStack = new Stack<Song>();
 		queue = new ArrayList<Song>();
 		p= new JPanel(new GridLayout(1,5));
+		p.setBorder(new LineBorder(new Color(50,205,50)));
 		next = new JButton();
 		prev= new JButton();
 		pause= new JButton();
@@ -83,7 +85,6 @@ public class Player extends JComponent implements ActionListener{
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    table.setTableHeader(null);
 	    table.setRowHeight(20);
-		table.setSelectionBackground(new Color(204,255,153));
 		table.getColumnModel().getColumn(0).setPreferredWidth(150);	
 		table.getColumnModel().getColumn(1).setPreferredWidth(20);	
 		table.setShowVerticalLines(false);
@@ -92,8 +93,6 @@ public class Player extends JComponent implements ActionListener{
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setPreferredSize(new Dimension(20, 20));
 		scrollPane.setAlignmentX(RIGHT_ALIGNMENT);
-		scrollPane.getVerticalScrollBar().setBackground(Color.lightGray);
-		scrollPane.getViewport().setBackground(new Color(32,32,32));
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(130,200));
@@ -210,9 +209,11 @@ public class Player extends JComponent implements ActionListener{
 		return false;
 	}
 	public void changeSoundLevel(int percent) {
-		volume = ((double)percent)/100;
-		if(queue.get(0).isPlaying()){
-			queue.get(0).setVolume(volume);
+		if(!queue.isEmpty()){
+			volume = ((double)percent)/100;
+			if(queue.get(0).isPlaying()){
+				queue.get(0).setVolume(volume);
+			}
 		}
 	}
 
@@ -244,7 +245,7 @@ public class Player extends JComponent implements ActionListener{
 		    name="";
 			button = new JButton();
 			try{
-				Image img = ImageIO.read(getClass().getResource("/remove.jpg"));
+				Image img = ImageIO.read(getClass().getResource("/remove.png"));
 				button.setIcon(new ImageIcon(img));
 				button.setBorder(null);
 			}catch(IOException e){System.out.println("Problem reading images");} 

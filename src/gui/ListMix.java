@@ -31,7 +31,7 @@ public class ListMix extends JFrame implements ChangeListener{
 		final CountDownLatch latch = new CountDownLatch(1);
 		SwingUtilities.invokeLater(new Runnable() {
 		    public void run() {
-		        new JFXPanel(); // initializes JavaFX environment
+		        new JFXPanel(); 
 		        latch.countDown();
 		    }
 		});
@@ -40,6 +40,13 @@ public class ListMix extends JFrame implements ChangeListener{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		try {
+            // select Look and Feel
+            UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
         new JFrame("ListMix");
         setTitle("ListMix");
     	setLayout(new BorderLayout());
