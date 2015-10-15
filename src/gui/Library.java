@@ -101,7 +101,6 @@ public class Library extends JComponent implements ActionListener{
 		table.getColumnModel().getColumn(0).setMinWidth(179);	
 		table.getColumnModel().getColumn(1).setMinWidth(85);
 		table.getColumnModel().getColumn(2).setMaxWidth(20);
-//		table.setShowVerticalLines(false);
 		table.getColumn("").setCellRenderer(new ButtonRenderer());
 	    table.getColumn("").setCellEditor(new ButtonEditor(new JCheckBox()));
 	    

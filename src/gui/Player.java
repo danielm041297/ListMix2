@@ -119,7 +119,6 @@ public class Player extends JComponent implements ActionListener{
 		table.getColumn("").setCellRenderer(new ButtonRenderer(true));
 	    table.getColumn("").setCellEditor(new ButtonEditor(new JCheckBox()));
 	    table.revalidate(); 	
-		table.setModel(model);
 	}
 	//TO DO: Make the playlist so that previous works.. like youtube playlists!!
 	/**
